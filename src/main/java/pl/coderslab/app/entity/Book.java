@@ -80,5 +80,17 @@ public class Book {
     public void setAuthors(List<Author> authors) {
         this.authors = authors;
     }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", rating=" + rating +
+                ", description='" + description + '\'' +
+                ", publisher=" + publisher.getName() +
+//                ", author=" + authors +
+                '}';
+    }
 }
 

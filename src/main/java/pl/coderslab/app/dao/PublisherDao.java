@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pl.coderslab.app.entity.Publisher;
 
+import java.util.List;
+
 @Repository
 @Transactional
 public class PublisherDao {
@@ -30,5 +32,9 @@ public class PublisherDao {
         if (publisher != null) {
             entityManager.remove(publisher);
         }
+    }
+
+    public List<Publisher> findAll() {
+        return entityManager.createQuery("SELECT p FROM Publisher p", Publisher.class).getResultList();
     }
 }

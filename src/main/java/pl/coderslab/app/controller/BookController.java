@@ -35,12 +35,13 @@ public class BookController {
         publisher.setName("Test Publisher");
         publisherDao.save(publisher);
 
-        Author author1 = authorDao.findById(1L);
-        Author author2 = authorDao.findById(2L);
-
-        if (author1 == null || author2 == null) {
-            return "Nie znaleziono autorów o podanych ID.";
-        }
+//        usunięte na potrzeby przyszłych zadań
+//        Author author1 = authorDao.findById(1L);
+//        Author author2 = authorDao.findById(2L);
+//
+//        if (author1 == null || author2 == null) {
+//            return "Nie znaleziono autorów o podanych ID.";
+//        }
 
         Book book = new Book();
         book.setTitle("title");
@@ -48,10 +49,17 @@ public class BookController {
         book.setDescription("Test description");
         book.setPublisher(publisher);
 
-        book.setAuthors(List.of(author1, author2));
+//        book.setAuthors(List.of(author1, author2));
 
         bookDao.save(book);
         return "Dodano książkę o ID: " + book.getId();
+    }
+
+    @GetMapping("/all")
+    @ResponseBody
+    public String getAllBooks() {
+        List<Book> books = bookDao.findAll();
+        return books.toString();
     }
 
     @PostMapping(value = "/update", produces = "text/plain;charset=UTF-8")

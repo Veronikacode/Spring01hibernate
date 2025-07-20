@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pl.coderslab.app.entity.Author;
 
+import java.util.List;
+
 @Repository
 @Transactional
 public class AuthorDao {
@@ -31,5 +33,9 @@ public class AuthorDao {
         if (author != null) {
             entityManager.remove(author);
         }
+    }
+
+    public List<Author> findAll() {
+        return entityManager.createQuery("SELECT a FROM Author a", Author.class).getResultList();
     }
 }
