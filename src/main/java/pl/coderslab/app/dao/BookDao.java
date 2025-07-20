@@ -1,9 +1,10 @@
-package pl.coderslab.app.entity;
+package pl.coderslab.app.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import pl.coderslab.app.entity.Book;
 
 @Repository
 @Transactional
@@ -24,8 +25,9 @@ public class BookDao {
         return entityManager.find(Book.class, id);
     }
 
-    public void delete(Book book) {
-        if (entityManager.contains(book)) {
+    public void delete(Long id) {
+        Book book = entityManager.find(Book.class, id);
+        if (book != null) {
             entityManager.remove(book);
         }
     }
