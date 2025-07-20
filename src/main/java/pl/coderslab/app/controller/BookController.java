@@ -3,8 +3,14 @@ package pl.coderslab.app.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import pl.coderslab.app.dao.AuthorDao;
 import pl.coderslab.app.dao.BookDao;
+import pl.coderslab.app.dao.PublisherDao;
+import pl.coderslab.app.entity.Author;
 import pl.coderslab.app.entity.Book;
+import pl.coderslab.app.entity.Publisher;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/book")
@@ -12,21 +18,38 @@ import pl.coderslab.app.entity.Book;
 public class BookController {
 
     private final BookDao bookDao;
+    private final PublisherDao publisherDao;
+    private final AuthorDao authorDao;
 
     @Autowired
-    public BookController(BookDao bookDao) {
+    public BookController(BookDao bookDao, PublisherDao publisherDao, AuthorDao authorDao) {
         this.bookDao = bookDao;
+        this.publisherDao = publisherDao;
+        this.authorDao = authorDao;
     }
 
-    @PostMapping(value = "/add", produces = "text/plain;charset=UTF-8")
+    @GetMapping(value = "/add", produces = "text/plain;charset=UTF-8")
     @ResponseBody
-    public String add(@RequestParam("title") String title,
-                      @RequestParam("rating") int rating,
-                      @RequestParam("description") String description) {
+    public String add() {
+        Publisher publisher = new Publisher();
+        publisher.setName("Test Publisher");
+        publisherDao.save(publisher);
+
+        Author author1 = authorDao.findById(1L);
+        Author author2 = authorDao.findById(2L);
+
+        if (author1 == null || author2 == null) {
+            return "Nie znaleziono autorów o podanych ID.";
+        }
+
         Book book = new Book();
-        book.setTitle(title);
-        book.setRating(rating);
-        book.setDescription(description);
+        book.setTitle("title");
+        book.setRating(5);
+        book.setDescription("Test description");
+        book.setPublisher(publisher);
+
+        book.setAuthors(List.of(author1, author2));
+
         bookDao.save(book);
         return "Dodano książkę o ID: " + book.getId();
     }
