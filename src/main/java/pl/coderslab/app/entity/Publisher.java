@@ -18,6 +18,8 @@ public class Publisher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private Integer nip;
+    private Integer regon;
 
     @OneToMany(mappedBy = "publisher")
     private List<Book> books;
@@ -44,5 +46,21 @@ public class Publisher {
 
     public void setBooks(List<Book> books) {
         this.books = books;
+    }
+
+    public Integer getNip() {
+        return nip;
+    }
+
+    public void setNip(Integer nip) {
+        this.nip = nip;
+    }
+
+    public Integer getRegon() {
+        return regon;
+    }
+
+    public void setRegon(Integer regon) {
+        this.regon = regon;
     }
 }

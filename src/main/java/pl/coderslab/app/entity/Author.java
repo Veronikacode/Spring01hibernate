@@ -18,6 +18,8 @@ public class Author {
     private Long id;
     private String firstName;
     private String lastName;
+    private String email;
+    private Integer pesel;
 
     @ManyToMany(mappedBy = "authors")
     private List<Book> books;
@@ -52,5 +54,21 @@ public class Author {
 
     public void setBooks(List<Book> books) {
         this.books = books;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Integer getPesel() {
+        return pesel;
+    }
+
+    public void setPesel(Integer pesel) {
+        this.pesel = pesel;
     }
 }

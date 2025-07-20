@@ -33,6 +33,10 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authors;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     public Long getId() {
         return id;
     }
@@ -90,6 +94,7 @@ public class Book {
                 ", description='" + description + '\'' +
                 ", publisher=" + publisher.getName() +
 //                ", author=" + authors +
+                ", category=" + (category != null ? category.getName() : "No category") +
                 '}';
     }
 }

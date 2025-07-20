@@ -9,6 +9,7 @@ import pl.coderslab.app.dao.PublisherDao;
 import pl.coderslab.app.entity.Author;
 import pl.coderslab.app.entity.Book;
 import pl.coderslab.app.entity.Publisher;
+import pl.coderslab.app.repository.BookRepository;
 
 import java.util.List;
 
@@ -20,12 +21,14 @@ public class BookController {
     private final BookDao bookDao;
     private final PublisherDao publisherDao;
     private final AuthorDao authorDao;
+    private final BookRepository bookRepository;
 
     @Autowired
-    public BookController(BookDao bookDao, PublisherDao publisherDao, AuthorDao authorDao) {
+    public BookController(BookDao bookDao, PublisherDao publisherDao, AuthorDao authorDao, BookRepository bookRepository) {
         this.bookDao = bookDao;
         this.publisherDao = publisherDao;
         this.authorDao = authorDao;
+        this.bookRepository = bookRepository;
     }
 
     @GetMapping(value = "/add", produces = "text/plain;charset=UTF-8")
@@ -58,8 +61,9 @@ public class BookController {
     @GetMapping("/all")
     @ResponseBody
     public String getAllBooks() {
-        List<Book> books = bookDao.findAll();
+        List<Book> books = bookRepository.findAll();
         return books.toString();
+
     }
 
     @PostMapping(value = "/update", produces = "text/plain;charset=UTF-8")
