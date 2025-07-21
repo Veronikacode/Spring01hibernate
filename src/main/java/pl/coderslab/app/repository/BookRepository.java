@@ -13,9 +13,11 @@ import java.util.Optional;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-    List<Book> findByTitle(String title);
+    @Query("SELECT b FROM Book b WHERE b.title = ?1")
+    Book findByTitle(String title);
 
-    List<Book> findByCategory(Category category);
+    @Query("SELECT b FROM Book b WHERE b.category.name = ?1")
+    List<Book> findByCategory(String categoryName);
 
     List<Book> findByCategory_Id(Long categoryId);
 
@@ -27,4 +29,14 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     Optional<Book> findFirstByCategoryOrderByTitle(Category category);
 
+    @Query("SELECT b FROM Book b WHERE b.rating BETWEEN :minRating AND :maxRating")
+    List<Book> findBooksByRatingBetween(@Param("minRating") int minRating, @Param("maxRating") int maxRating);
+
+    @Query("SELECT b FROM Book b WHERE b.publisher = :publisher")
+    List<Book> findBooksByPublisher(@Param("publisher") Publisher publisher);
+
+    @Query("SELECT b FROM Book b WHERE b.category = :category ORDER BY b.title ASC")
+    Optional<Book> findFirstBookByCategoryOrderByTitle(@Param("category") Category category);
 }
+
+

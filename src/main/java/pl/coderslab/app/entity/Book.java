@@ -49,8 +49,9 @@ public class Book {
         return title;
     }
 
-    public void setTitle(String title) {
+    public String setTitle(String title) {
         this.title = title;
+        return title;
     }
 
     public int getRating() {
@@ -85,6 +86,14 @@ public class Book {
         this.authors = authors;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
@@ -92,8 +101,8 @@ public class Book {
                 ", title='" + title + '\'' +
                 ", rating=" + rating +
                 ", description='" + description + '\'' +
-                ", publisher=" + publisher.getName() +
-//                ", author=" + authors +
+                ", authors=" + (authors != null ? authors.size() + " authors" : "No authors") +
+                ", publisher=" + (publisher != null ? publisher.getName() : "No publisher") +
                 ", category=" + (category != null ? category.getName() : "No category") +
                 '}';
     }

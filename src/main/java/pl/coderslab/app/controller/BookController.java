@@ -8,8 +8,10 @@ import pl.coderslab.app.dao.BookDao;
 import pl.coderslab.app.dao.PublisherDao;
 import pl.coderslab.app.entity.Author;
 import pl.coderslab.app.entity.Book;
+import pl.coderslab.app.entity.Category;
 import pl.coderslab.app.entity.Publisher;
 import pl.coderslab.app.repository.BookRepository;
+import pl.coderslab.app.repository.CategoryRepository;
 
 import java.util.List;
 
@@ -22,13 +24,15 @@ public class BookController {
     private final PublisherDao publisherDao;
     private final AuthorDao authorDao;
     private final BookRepository bookRepository;
+    private final CategoryRepository categoryrepository;
 
     @Autowired
-    public BookController(BookDao bookDao, PublisherDao publisherDao, AuthorDao authorDao, BookRepository bookRepository) {
+    public BookController(BookDao bookDao, PublisherDao publisherDao, AuthorDao authorDao, BookRepository bookRepository, CategoryRepository categoryrepository) {
         this.bookDao = bookDao;
         this.publisherDao = publisherDao;
         this.authorDao = authorDao;
         this.bookRepository = bookRepository;
+        this.categoryrepository = categoryrepository;
     }
 
     @GetMapping(value = "/add", produces = "text/plain;charset=UTF-8")
@@ -98,5 +102,45 @@ public class BookController {
     public String delete(@RequestParam("id") Long id) {
         bookDao.delete(id);
         return "Usunięto książkę o ID: " + id + " (jeśli istniała)";
+    }
+
+    @GetMapping("/byTitle")
+    @ResponseBody
+    public String bookByTitle() {
+        Publisher publisher = new Publisher();
+        publisher.setName("Test Publisher");
+        publisherDao.save(publisher);
+
+        Book book = new Book();
+        String title = book.setTitle("Test Title");
+        bookRepository.save(book);
+
+        List<Book> books = bookRepository.findByTitle("Test Title");
+        if (books.isEmpty()) {
+            return "Nie znaleziono książek o tytule: " + title;
+        }
+        return books.toString();
+    }
+
+    @GetMapping("/byCategory")
+    @ResponseBody
+    public String bookByCategory() {
+        Publisher publisher = new Publisher();
+        publisher.setName("Test Publisher");
+        publisherDao.save(publisher);
+
+        Category category = new Category();
+        category.setName("Test Category");
+        categoryrepository.save(category);
+
+        Book book = new Book();
+        book.setTitle("Test Book");
+        book.setCategory(category);
+        bookRepository.save(book);
+
+        List<Book> byCategory = bookRepository.findByCategory(category.getName());
+
+        return byCategory.toString();
+
     }
 }
