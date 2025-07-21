@@ -115,11 +115,8 @@ public class BookController {
         String title = book.setTitle("Test Title");
         bookRepository.save(book);
 
-        List<Book> books = bookRepository.findByTitle("Test Title");
-        if (books.isEmpty()) {
-            return "Nie znaleziono książek o tytule: " + title;
-        }
-        return books.toString();
+        Book testTitle = bookRepository.findByTitle("Test Title");
+        return testTitle.toString();
     }
 
     @GetMapping("/byCategory")
